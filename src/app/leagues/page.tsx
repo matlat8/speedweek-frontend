@@ -7,6 +7,7 @@ import ProtectedRoute from '@/components/ProtectedRoute'
 export default function LeaguesPage() {
 
     const { data, error, isLoading } = useQuery({ queryKey: ['leagues'], queryFn: fetchLeagues })
+    console.log('Data:', data);
 
     if (isLoading) return <div>Loading...</div>;
     if (error) return <div>Error loading leagues</div>;
@@ -14,7 +15,9 @@ export default function LeaguesPage() {
     return (
         <ProtectedRoute>
             <div>
-                <h1>Leagues</h1>
+                <pre className='text-black'>
+                    <code>{JSON.stringify(data, null, 4)}</code>
+                </pre>
             </div>
         </ProtectedRoute>
     );
