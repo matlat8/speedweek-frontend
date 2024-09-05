@@ -29,12 +29,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased flex h-full overflow-hidden bg-gray-100`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased flex h-full overflow-hidden bg-gray-50`}
       >
         <Providers>
           <div className="flex w-full min-h-screen">
             <Drawer />
-            <div className="flex flex-col relative grow isolate">
+            <div className="flex flex-col relative grow isolate text-gray-600">
               {children}
             </div>
           </div>
