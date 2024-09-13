@@ -1,5 +1,6 @@
 'use client'
 
+import { useRouter } from 'next/navigation';
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import swAPI from '@/api/axiosInstance';
 import { useQuery } from '@tanstack/react-query';
@@ -10,7 +11,9 @@ interface AuthContextType {
   logout: () => void;
 }
 
+
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
 
 export const useUser = () => useQuery({
   queryKey: ['user'],
@@ -22,6 +25,7 @@ export const useUser = () => useQuery({
 
 
 export function AuthProvider({ children }: { children: ReactNode }) {
+  const router = useRouter();
   const [user, setUser] = useState(() => {
     if (typeof window !== 'undefined') {
       const storedUser = localStorage.getItem('user');
@@ -83,6 +87,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         if (response.status === 401) {
           console.log('User is unauthorized, logging out...');
           setUser(null);
+          router.push('/login');
         }
       }
     } catch (error) {
@@ -91,6 +96,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         console.log('User is unauthorized, logging out...');
         // Unset user state if unauthorized
         setUser(null);
+        router.push('/login');
       }
     }
   };
@@ -99,6 +105,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const interval = setInterval(checkAuthStatus, 30000); // Check every 30 seconds
     return () => clearInterval(interval); // Cleanup on unmount
   }, []);
+
+  useEffect(() => {
+    if (user === null) {
+      router.push('/login');
+    }
+  }, [user]);
 
   return (
     <AuthContext.Provider value={{ user, login, logout }}>

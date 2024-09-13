@@ -2,6 +2,7 @@
 'use client'
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 
@@ -22,7 +23,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex items-center justify-center min-h-screen">
       <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
         <h1 className="text-2xl font-bold mb-6 text-center">Login</h1>
         <form onSubmit={handleSubmit}>
@@ -53,6 +54,12 @@ export default function LoginPage() {
             Login
           </button>
         </form>
+        <div className='pt-4'>
+
+        </div>
+        <div className='pt-4'>
+          <p>No account? <Link href="/register" className="text-blue-500 hover:underline">Sign up</Link></p>
+        </div>
       </div>
     </div>
   );

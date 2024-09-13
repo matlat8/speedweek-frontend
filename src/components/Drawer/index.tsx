@@ -10,6 +10,7 @@ import { cn } from "@/utils";
 import { DrawerItem } from "./DrawerItem";
 import { DrawerItemGroup } from "./DrawerItemGroup";
 import { DrawerSectionDivider } from "./DrawerSectionDivider";
+import { useAuth } from "@/context/AuthContext";
 
 export const DrawerContext = createContext<RefObject<HTMLLIElement>>({ current: null });
 
@@ -17,14 +18,16 @@ export function Drawer() {
   const pathname = usePathname();
   const { push } = useRouter();
   const ref = useRef<HTMLLIElement>(null);
+  const { logout } = useAuth();
 
-  const logout = async function() {
-    getQueryClient.setQueryData(["user"], false);
+  const handleLogout = async () => {
     await swAPI.post("/auth/cookie/logout");
+    logout(); // Clear the user state
+    push("/login"); // Redirect to login page
   };
 
   return (
-    <aside className="w-[241px] sticky left-0 border-r h-screen flex flex-col overflow-y-auto shrink-0 py-4.5 bg-white z-10 top-0">
+    <aside className="w-[241px] sticky left-0 border-r h-screen flex flex-col overflow-y-auto shrink-0 py-4.5 bg-white z-10 top-0 pt-16">
       <div className="flex justify-center h-35 items-start shrink-0">
 
       </div>
@@ -62,7 +65,7 @@ export function Drawer() {
           </DrawerItemGroup>
           <DrawerSectionDivider />
           <DrawerItemGroup>
-            <DrawerItem icon={FaArrowRightFromBracket} onClick={logout}>
+            <DrawerItem icon={FaArrowRightFromBracket} onClick={handleLogout}>
               Logout
             </DrawerItem>
           </DrawerItemGroup>
