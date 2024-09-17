@@ -7,6 +7,7 @@ import { Container } from '@/components/Container'
 
 import fetchLeagues from '@/api/Leagues'
 import ProtectedRoute from '@/components/ProtectedRoute'
+import { Spinner } from '@/components/Spinner'
 export default function LeaguesPage() {
 
     const { data, error, isLoading } = useQuery({ queryKey: ['leagues'], queryFn: fetchLeagues })
@@ -14,7 +15,11 @@ export default function LeaguesPage() {
     
     console.log('Data:', data);
 
-    if (isLoading) return <div>Loading...</div>;
+    if (isLoading) return (
+        <div className='flex items-center justify-center min-h-screen'>
+            <Spinner />
+        </div>
+    );
     if (error) return <div>Error loading leagues</div>;
     const leagues = data?.data || [];
     return (

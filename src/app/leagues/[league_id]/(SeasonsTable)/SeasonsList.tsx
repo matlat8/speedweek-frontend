@@ -16,6 +16,7 @@ import {
     TableHeader,
     TableRow,
   } from "@/components/ui/table"
+import { useParams, useRouter } from "next/navigation"
 
 
 interface DataTableProps<TData, TValue> {
@@ -28,6 +29,8 @@ export function SeasonsDataTable<TData, TValue>({
     data,
   }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = React.useState<SortingState>([])
+    const router = useRouter()
+    const { league_id } = useParams<{ league_id: string }>();
     const table = useReactTable({
       data,
       columns,
@@ -38,6 +41,10 @@ export function SeasonsDataTable<TData, TValue>({
         sorting,
       }
     })
+
+    const handleRowClick = (season_id: int) => {
+      router.push(`/leagues/${league_id}/seasons/${season_id}`)
+    }
    
     return (
       <div className="border h-full">
@@ -67,6 +74,7 @@ export function SeasonsDataTable<TData, TValue>({
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                   className="hover:bg-gray-100 h-16"
+                  onClick={() => handleRowClick(row.original.id)}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id} className="border">

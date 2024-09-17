@@ -27,50 +27,47 @@ export function Drawer() {
   };
 
   return (
-    <aside className="w-[241px] sticky left-0 border-r h-screen flex flex-col overflow-y-auto shrink-0 py-4.5 bg-white z-10 top-0 pt-16">
-      <div className="flex justify-center h-35 items-start shrink-0">
-
-      </div>
-      <ul className="flex flex-col relative mx-6">
-        <DrawerContext.Provider value={ref}>
-          <li
-            className="bg-primary w-1 rounded-r-full h-12.5 absolute transition-all -left-6"
-            ref={ref}
-          />
-          <DrawerItemGroup>
-            <DrawerItem
-              active={pathname === "/"}
-              icon={FaTachometerAlt}
-              onClick={() => push("/")}
-            >
-              Dashboard
-            </DrawerItem>
-            <DrawerItem
-                active={pathname === "/teams"}
-                icon={FaPeopleGroup}
-                onClick={() => push("/teams")}
-            >
-                Teams
-            </DrawerItem>
-          </DrawerItemGroup>
-          <DrawerSectionDivider>Time Trials</DrawerSectionDivider>
-          <DrawerItemGroup>
-            <DrawerItem
-              active={pathname === "/leagues"}
-              icon={FaCarSide}
-              onClick={() => push("/leagues")}
-            >
-              Leagues
-            </DrawerItem>
-          </DrawerItemGroup>
-          <DrawerSectionDivider />
-          <DrawerItemGroup>
-            <DrawerItem icon={FaArrowRightFromBracket} onClick={handleLogout}>
-              Logout
-            </DrawerItem>
-          </DrawerItemGroup>
-        </DrawerContext.Provider>
-      </ul>
-    </aside>
+  <aside className="w-[241px] sticky left-0 border-r h-screen flex flex-col overflow-y-auto shrink-0 py-4.5 bg-white z-10 top-0 pt-16">
+    <div className="flex justify-center h-35 items-start shrink-0">
+      {/* Add any content here if needed */}
+    </div>
+    <ul className="flex flex-col relative mx-6">
+      <DrawerContext.Provider value={ref}>
+        <li
+          className="bg-primary w-1 rounded-r-full h-12.5 absolute transition-all -left-6"
+          ref={ref}
+        />
+        <DrawerItemGroup>
+          <DrawerItem
+            active={pathname === "/"}
+            icon={FaTachometerAlt}
+            onClick={() => push("/")}
+          >
+            Dashboard
+          </DrawerItem>
+          <DrawerItem
+            active={pathname === "/teams"}
+            icon={FaPeopleGroup}
+            onClick={() => push("/teams")}
+          >
+            Teams
+          </DrawerItem>
+        </DrawerItemGroup>
+        <DrawerSectionDivider>
+          <p className="p-3">Time Trials</p>
+        </DrawerSectionDivider>
+        <DrawerItemGroup>
+          <DrawerItem
+            active={pathname === "/leagues"}
+            icon={FaCarSide}
+            onClick={() => push("/leagues")}
+          >
+            Leagues
+          </DrawerItem>
+        </DrawerItemGroup>
+        <DrawerSectionDivider />
+      </DrawerContext.Provider>
+    </ul>
+  </aside>
   );
 }

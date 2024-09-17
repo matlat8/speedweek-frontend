@@ -1,10 +1,15 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { Inter } from 'next/font/google'
 import "./globals.css";
 
 import Providers from "./providers";
 import { Drawer } from "@/components/Drawer";
 
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+})
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -29,11 +34,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased flex h-full overflow-hidden bg-gray-100`}
+        className={`${inter.className} ${geistMono.variable} antialiased flex bg-gray-100`}
       >
         <Providers>
           <div className="flex w-full min-h-screen">
-            <Drawer />
+            <div className="sticky top-0">
+              <Drawer />
+            </div>
             <div className="flex flex-col relative grow isolate text-gray-600">
               {children}
             </div>
