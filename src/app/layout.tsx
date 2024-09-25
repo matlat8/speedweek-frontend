@@ -37,10 +37,8 @@ export default function RootLayout({
         className={`${inter.className} ${geistMono.variable} antialiased flex bg-gray-100`}
       >
         <Providers>
-          <div className="flex w-full min-h-screen">
-            <div className="sticky top-0">
-              <Drawer />
-            </div>
+          <div className="flex w-full h-full">
+            <Drawer />
             <div className="flex flex-col relative grow isolate text-gray-600">
               {children}
             </div>

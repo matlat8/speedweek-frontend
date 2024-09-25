@@ -8,6 +8,8 @@ import { Spinner } from "@/components/Spinner";
 import { useQuery } from "@tanstack/react-query"
 import { useParams, useRouter } from "next/navigation"
 import { WeeksListing } from "./(WeeksList)/WeeksList";
+import { Button } from "@/components/ui/button";
+import { NewWeekDialog } from "./(NewWeek)/NewWeek";
 
 
 export default function seasonPage() {
@@ -32,6 +34,8 @@ export default function seasonPage() {
         queryFn: () => fetchWeeks(leagueId, seasonId),
     })
 
+
+
     if (isLoading) return (
         <div className='flex items-center justify-center min-h-full'>
             <Spinner color='primary'/>
@@ -39,21 +43,30 @@ export default function seasonPage() {
     );
     return (
         <Container className="sm:pt-[8rem] pb-8">
-        <div>
-            <h1 className="font-light text-[20px]">
-                {leagueData ? leagueData.info.name : 'Loading...'}
-            </h1>
-            <h1 className="font-medium text-[24px]">
-                {data ? data.info.name : 'Loading...'}
-            </h1>
+        <div className="flex items-center">
+            <div className="flex-col">
+                <h1 className="font-light text-[20px]">
+                    {leagueData ? leagueData.info.name : 'Loading...'}
+                </h1>
+                <h1 className="font-medium text-[24px]">
+                    {data ? data.info.name : 'Loading...'}
+                </h1>
+            </div>
+            <div className="ml-auto flex items-center space-x-2">
+                <Button variant={'outline'} onClick={() => router.push(`/leagues/${leagueId}/seasons/${seasonId}/edit`)}>Edit</Button>
+                <NewWeekDialog />
+            </div>
         </div>
         <div className="flex flex-col sm:flex-row gap-4" style={{ minHeight: '100%' }}>
-            <div className="w-full sm:w-2/5 bg-white overflow-y-auto" style={{ maxHeight: 'calc(100vh - 12rem)', paddingBottom: '1rem' }}>
-                <pre className="p-4">
+            <div className="flex flex-col relative w-full sm:w-2/5 bg-white overflow-y-auto" style={{ maxHeight: 'calc(100vh - 12rem)', paddingBottom: '1rem' }}>
+                <pre className="p-4 flex-grow">
                     <code>{JSON.stringify(data, null, 4)}</code>
                     <code>{JSON.stringify(leagueData, null, 4)}</code>
                     <code>{JSON.stringify(weeksData, null, 4)}</code>
                 </pre>
+                <div className="mt-auto p-4 bg-gray-100 text-gray-600 text-sm">
+                    Footer content here
+                </div>
             </div>
             <div className="w-full sm:w-3/5">
                 <WeeksListing data={weeksData?.data || []} />
