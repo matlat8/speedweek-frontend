@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import { useRouter, useParams } from 'next/navigation'
 import Link from 'next/link';
+import { TopLaps } from '../TopLaps';
 
 interface Week {
     id: number;
@@ -35,13 +36,20 @@ interface WeeksListingProps {
 
 export const WeeksListing: React.FC<WeeksListingProps> = ({ data }) => {
     const router = useRouter();
+    const [selectedWeek, setSelectedWeek] = useState<number | null>(null);
+    const [isWeekDialogOpen, setIsWeekDialogOpen] = useState(false);
     const { league_id, season_id } = useParams<{ league_id: string, season_id: string}>();
+
+    const handleClick = (e: React.MouseEvent<HTMLLIElement>) => {
+        const weekId = e.currentTarget.id;
+        setSelectedWeek(Number(weekId));
+        setIsWeekDialogOpen(true);
+    }
     return (
         <div>
             <ul>
                 {data.map((week) => (
-                    <li key={week.id} className='rounded-lg bg-white mb-4 flex max-h-[191px] overflow-hidden transition-shadow duration-300 hover:shadow-md'>
-                        <Link href={`/leagues/${league_id}/seasons/${season_id}/weeks/${week.id}`} className='w-full'>
+                    <li key={week.id} className='rounded-lg bg-white mb-4 flex max-h-[191px] overflow-hidden transition-shadow duration-300 hover:shadow-md' onClick={handleClick}>
                         <div className='flex w-full'>
                             <div className='pl-4 pt-4 flex-1'>
                                 <div className='font-bold pb-6'>Week {week.week_num}</div>
@@ -60,8 +68,8 @@ export const WeeksListing: React.FC<WeeksListingProps> = ({ data }) => {
                                     className='object-cover h-full w-full' 
                                 />
                             </div>
+                            <TopLaps week_id={week.id} isDialogOpen={isWeekDialogOpen}/>
                         </div>
-                        </Link>
                     </li>
                 ))}
             </ul>
