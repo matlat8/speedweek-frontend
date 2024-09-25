@@ -17,11 +17,12 @@ import {
     TableRow,
   } from "@/components/ui/table"
 import { useParams, useRouter } from "next/navigation"
+import { Season } from "./columns"
 
 
-interface DataTableProps<TData, TValue> {
-    columns: ColumnDef<TData, TValue>[]
-    data: TData[]
+interface DataTableProps<TData, TValue = unknown> {
+    columns: ColumnDef<Season, any>[]
+    data: Season[]
   }
 
 export function SeasonsDataTable<TData, TValue>({
@@ -69,12 +70,12 @@ export function SeasonsDataTable<TData, TValue>({
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
+              table.getRowModel().rows.map((row) => ( // row is Season, how do i get the id?
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                   className="hover:bg-gray-100 h-16"
-                  onClick={() => handleRowClick(Number(row.original))}
+                  onClick={() => handleRowClick(Number(row.original.id))} //
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id} className="border">
