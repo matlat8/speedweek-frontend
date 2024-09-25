@@ -42,7 +42,7 @@ export function SeasonsDataTable<TData, TValue>({
       }
     })
 
-    const handleRowClick = (season_id: int) => {
+    const handleRowClick = (season_id: number) => {
       router.push(`/leagues/${league_id}/seasons/${season_id}`)
     }
    
@@ -74,7 +74,7 @@ export function SeasonsDataTable<TData, TValue>({
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                   className="hover:bg-gray-100 h-16"
-                  onClick={() => handleRowClick(row.original.id)}
+                  onClick={() => handleRowClick(Number(row.original))}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id} className="border">

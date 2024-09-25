@@ -11,6 +11,7 @@ import TracksSelect from "./tracksSelect";
 import { ADateRange } from "@/components/DateRange";
 import swAPI from "@/api/axiosInstance";
 import { useParams } from 'next/navigation';
+import { DateRange } from "react-day-picker";
 
 interface SelectedCar { 
     value: string;
@@ -22,7 +23,6 @@ interface SelectedTrack {
     label: string;
 }
 
-
 export function NewWeekDialog() {
     const { league_id, season_id } = useParams<{ league_id: string, season_id: string}>();
     const queryClient = useQueryClient();
@@ -31,8 +31,8 @@ export function NewWeekDialog() {
     const [selectedCar, setSelectedCar] = useState<SelectedCar | null>(null);
     const [selectedTrack, setSelectedTrack] = useState<SelectedTrack | null>(null);
     const [date, setDate] = useState<DateRange | undefined>({
-        to: addDays(new Date(), 7),
         from: new Date(),
+        to: addDays(new Date(), 90),
     });
 
     const { data: carData, isLoading: carIsLoading, error: carError } = useQuery({
@@ -62,7 +62,7 @@ export function NewWeekDialog() {
         },
         onSuccess: () => {
             setIsDialogOpen(false);
-            queryClient.invalidateQueries(['weeks', league_id, season_id]);
+            queryClient.invalidateQueries({queryKey: ['weeks', league_id, season_id]});
         }
     })
 
@@ -74,12 +74,12 @@ export function NewWeekDialog() {
 
     console.log(carData);
     
-    const transformedCarData = Array.isArray(carData?.data) ? carData.data.map(car => ({
+    const transformedCarData = Array.isArray(carData?.data) ? carData.data.map((car: { id: { toString: () => any; }; car_name: any; }) => ({
         value: car.id.toString(),
         label: car.car_name
     })) : [];
 
-    const transformedTrackData = Array.isArray(tracksData?.data) ? tracksData.data.map(track => ({
+    const transformedTrackData = Array.isArray(tracksData?.data) ? tracksData.data.map((track: { id: { toString: () => any; }; name: string; config: string; }) => ({
         value: track.id.toString(),
         label: track.name + ' - ' + track.config
     })) : [];
@@ -96,7 +96,7 @@ export function NewWeekDialog() {
                     <DialogTitle>New Week</DialogTitle>
                     <DialogDescription>
                         <form onSubmit={handleSubmit}>
-                            <p>I don't know what to put here but it looks better with this text.</p>
+                            <p>I dont know what to put here but it looks better with this text.</p>
                             <div className='flex flex-row'>
                                 {/* Add form fields here */}
                             </div>

@@ -25,7 +25,7 @@ export default function TracksSelect({ data, onSelect }: TracksSelectProps) {
   const [filter, setFilter] = useState("")
   const [open, setOpen] = useState(false)
   const [selectedTrack, setSelectedTrack] = useState<Option | null>(null)
-  const inputRef = useRef(null)
+  const inputRef = useRef<HTMLInputElement>(null)
 
   const filterOptions = useCallback((options: Option[], filter: string) => {
     return options.filter(option =>

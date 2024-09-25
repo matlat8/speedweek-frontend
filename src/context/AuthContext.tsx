@@ -90,7 +90,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           router.push('/login');
         }
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error checking auth status:', error);
       if (error.response && error.response.status === 401) {
         console.log('User is unauthorized, logging out...');

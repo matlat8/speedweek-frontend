@@ -22,13 +22,13 @@ export default function LeagueDetailsPage() {
 
     const { data, error, isFetching } = useQuery({
         queryKey: ['leagues', league_id],
-        queryFn: () => fetchLeagueDetails(league_id as string),
+        queryFn: () => fetchLeagueDetails(Number(league_id)),
         enabled: !!league_id, // Only run the query if league_id is available
     });
 
     const { data: seasonsData, error: seasonsError, isFetching: seasonsIsFetching } = useQuery({
         queryKey: ['seasons', league_id],
-        queryFn: () => fetchSeasons(league_id as string),
+        queryFn: () => fetchSeasons(Number(league_id)),
         enabled: !!league_id, // Only run the query if league_id is available
     });
 

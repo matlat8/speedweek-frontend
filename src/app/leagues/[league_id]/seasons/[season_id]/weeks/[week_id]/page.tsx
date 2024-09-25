@@ -10,7 +10,7 @@ const { league_id, season_id, week_id } = useParams<{ league_id: string, season_
 
     const { data: lapData, error: lapError, isLoading: lapIsLoading } = useQuery({
         queryKey: ['laps', league_id, season_id, week_id],
-        queryFn: () => fetchLaps(league_id, season_id, Number(week_id)),
+        queryFn: () => fetchLaps(Number(league_id), Number(season_id), Number(week_id)),
     });
 
     if (lapIsLoading) return <div>Loading...</div>;

@@ -7,12 +7,12 @@ const fetchLeagues = async () => {
     return response.data;
 }
 
-export const fetchLeagueDetails = async (id: int) => {
+export const fetchLeagueDetails = async (id: number) => {
     const response = await swAPI.get(`/leagues/${id}`);
     return response.data;
 }
 
-export const fetchLeagueMembers = async (id: int) => {
+export const fetchLeagueMembers = async (id: number) => {
     const response = await swAPI.get(`/leagues/${id}/members`);
     return response.data
 }

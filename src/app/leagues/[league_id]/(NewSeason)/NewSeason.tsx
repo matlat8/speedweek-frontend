@@ -33,7 +33,7 @@ export function NewSeason() {
         },
         onSuccess: () => {
             setIsDialogOpen(false);
-            queryClient.invalidateQueries(['seasons', league_id]);
+            queryClient.invalidateQueries({queryKey: ['leagues', league_id]});
         }
     });
 
