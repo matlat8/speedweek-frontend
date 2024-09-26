@@ -15,7 +15,6 @@ export default function WeekPage() {
             <div>WeekPage</div>
             <div className="flex pt-16">
                 <div className="w-1/2 bg-white">
-                    <TopLaps />
                 </div>
             </div>
         </ProtectedRoute>
