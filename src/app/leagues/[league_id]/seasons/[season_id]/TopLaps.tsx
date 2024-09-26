@@ -3,8 +3,11 @@ import { useRouter, useParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query"
 import { fetchLaps, Lap} from "@/api/Weeks";
 import { Spinner } from "@/components/Spinner";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
 import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { useAuth } from "@/context/AuthContext";
+import { fetchLeagueDetails, fetchLeagueMembers, LeagueMember } from "@/api/Leagues";
 
 
 const formatLapTime = (seconds: number): string => {
@@ -27,6 +30,13 @@ export function TopLaps({ week_id, isDialogOpen: initialDialogOpen }: TopLapsPro
         queryKey: ['laps', league_id, season_id, week_id],
         queryFn: () => fetchLaps(Number(league_id), Number(season_id), Number(week_id)),
     });
+    const { data: leagueMemberData, isLoading: isLeagueMemberLoading } = useQuery({
+        queryKey: ['leagues', league_id],
+        queryFn: () => fetchLeagueMembers(Number(league_id))
+    })
+    const user = useAuth();
+
+    const isUserLeagueAdmin = leagueMemberData?.data?.find((member: LeagueMember) => member.user_id === user?.user.id && member.is_admin === true);
 
     useEffect(() => {
         setIsDialogOpen(initialDialogOpen);
@@ -38,9 +48,14 @@ export function TopLaps({ week_id, isDialogOpen: initialDialogOpen }: TopLapsPro
         </div>
     );
 
+    console.log(user)
+
     return (
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogContent className="bg-white">
+                <DialogHeader>
+                    {isUserLeagueAdmin && <Button variant="default" className="w-max">Finalize Results</Button>}
+                </DialogHeader>
                 <div>
                 {lapData?.data.items.map((lap: Lap, index: number) => (
                     <div key={lap.id} className="flex p-2 border-b border-gray-200">

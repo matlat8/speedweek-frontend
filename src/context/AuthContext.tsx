@@ -5,8 +5,16 @@ import { createContext, useContext, useState, useEffect, ReactNode } from 'react
 import swAPI from '@/api/axiosInstance';
 import { useQuery } from '@tanstack/react-query';
 
+interface User {
+  id: string;
+  email: string;
+  is_active: boolean;
+  is_superuser: boolean;
+  is_verified: boolean;
+}
+
 interface AuthContextType {
-  user: any;
+  user: User;
   login: (username: string, password: string) => Promise<void>;
   logout: () => void;
 }
