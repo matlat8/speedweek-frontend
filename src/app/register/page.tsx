@@ -25,7 +25,7 @@ export default function Register() {
         onSuccess: () => {
             router.push('/login')
         },
-        onError: (error) => {
+        onError: (error: any) => {
             console.log(error)
             setErrorMessage(error.response?.data?.detail)
         }
