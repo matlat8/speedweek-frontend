@@ -5,38 +5,43 @@ import { useRouter } from 'next/navigation'
 
 import { Container } from '@/components/Container'
 
-import fetchLeagues from '@/api/Leagues'
 import ProtectedRoute from '@/components/ProtectedRoute'
 import { Spinner } from '@/components/Spinner'
+import { SpeedWeekAPI } from '@/api/SpeedWeekAPI'
 export default function LeaguesPage() {
 
-    const { data, error, isLoading } = useQuery({ queryKey: ['leagues'], queryFn: fetchLeagues })
+    const { data, isLoading, error } = useQuery({ 
+        queryKey: ['leagues'], 
+        queryFn: () => SpeedWeekAPI.fetch('/leagues') 
+    })
     const router = useRouter()
-    
-    console.log('Data:', data);
 
-    if (isLoading) return (
-        <div className='flex items-center justify-center min-h-screen'>
-            <Spinner />
-        </div>
-    );
-    if (error) return <div>Error loading leagues</div>;
-    const leagues = data?.data || [];
+
+    if (error) return <div>Error loading leagues: {JSON.stringify(error)}</div>;
+
     return (
         <ProtectedRoute>
             <Container>
                 <div className='flex gap-6 pt-4'>
-                    {Array.isArray(leagues) && leagues.length > 0 ? (
-                        leagues.map((league: any) => (
+
+                    { isLoading && (
+                        <div className='flex items-center justify-center min-h-screen'>
+                            <Spinner color='primary' />
+                        </div>
+                    )}
+
+                    {data && data.success && (
+                        data.data
+                        .map((league: any) => (
                             <div 
                             key={league.id} 
-                            className='p-4 border border-gray-300 w-full md:w-1/2 lg:w-1/3 xl:w-1/4 rounded-md bg-white cursor-pointer hover:bg-gray-50 hover:shadow-lg transition duration-200'                            onClick={() => router.push(`/leagues/${league.id}`)}>
+                            className='p-4 border border-gray-300 w-full md:w-1/2 lg:w-1/3 xl:w-1/4 rounded-md bg-white cursor-pointer hover:bg-gray-50 hover:shadow-lg transition duration-200'
+                            onClick={() => router.push(`/leagues/${league.id}`)}>
                                 <h1>{league.name}</h1>
-                                <p>{league.description}</p>
+                                <p>{league.created_at}</p>
+                                <p>{}</p>
                             </div>
                         ))
-                    ) : (
-                        <div>No leagues found</div>
                     )}
                     <div>
                     </div>

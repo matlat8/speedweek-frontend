@@ -29,6 +29,7 @@ export function TopLaps({ week_id, isDialogOpen: initialDialogOpen }: TopLapsPro
     const { data: lapData, error: lapError, isLoading: lapIsLoading } = useQuery({
         queryKey: ['laps', league_id, season_id, week_id],
         queryFn: () => fetchLaps(Number(league_id), Number(season_id), Number(week_id)),
+        enabled: isDialogOpen
     });
     const { data: leagueMemberData, isLoading: isLeagueMemberLoading } = useQuery({
         queryKey: ['leagues', league_id],
@@ -50,6 +51,12 @@ export function TopLaps({ week_id, isDialogOpen: initialDialogOpen }: TopLapsPro
 
     console.log(user)
 
+    if (lapIsLoading) return (
+        <div className='flex items-center justify-center min-h-screen'>
+            <Spinner color='primary'/>
+        </div>
+    );
+
     return (
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogContent className="bg-white">
@@ -57,13 +64,17 @@ export function TopLaps({ week_id, isDialogOpen: initialDialogOpen }: TopLapsPro
                     {isUserLeagueAdmin && <Button variant="default" className="w-max">Finalize Results</Button>}
                 </DialogHeader>
                 <div>
-                {lapData?.data.items.map((lap: Lap, index: number) => (
-                    <div key={lap.id} className="flex p-2 border-b border-gray-200">
-                        <div className="w-1/3">{index + 1}</div>
-                        <div className="w-1/3 text-center">{lap.driver.firstName} {lap.driver.lastName}</div>
-                        <div className="w-1/3 text-right">{formatLapTime(lap.lapTime)}</div>
-                    </div>
-                ))}
+                {lapData?.data.items.length === 0 ? (
+                    <div className="text-center p-4">There are no results.</div>
+                ) : (
+                    lapData?.data.items.map((lap: Lap, index: number) => (
+                        <div key={lap.id} className="flex p-2 border-b border-gray-200">
+                            <div className="w-1/3">{index + 1}</div>
+                            <div className="w-1/3 text-center">{lap.driver.firstName} {lap.driver.lastName}</div>
+                            <div className="w-1/3 text-right">{formatLapTime(lap.lapTime)}</div>
+                        </div>
+                    ))
+                )}
                 </div>
             </DialogContent>
         </Dialog>

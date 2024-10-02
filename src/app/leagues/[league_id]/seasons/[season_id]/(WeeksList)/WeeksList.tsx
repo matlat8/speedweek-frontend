@@ -3,6 +3,8 @@ import Image from 'next/image';
 import { useRouter, useParams } from 'next/navigation'
 import Link from 'next/link';
 import { TopLaps } from '../TopLaps';
+import { SpeedWeekAPI } from '@/api/SpeedWeekAPI';
+import { useQuery } from '@tanstack/react-query';
 
 interface Week {
     id: number;
@@ -34,11 +36,16 @@ interface WeeksListingProps {
     data: Week[];
 }
 
-export const WeeksListing: React.FC<WeeksListingProps> = ({ data }) => {
+export function WeeksListing() {
     const router = useRouter();
     const [selectedWeek, setSelectedWeek] = useState<number | null>(null);
     const [isWeekDialogOpen, setIsWeekDialogOpen] = useState(false);
     const { league_id, season_id } = useParams<{ league_id: string, season_id: string}>();
+
+    const { data, isLoading, error } = useQuery({
+        queryKey: ['weeks', league_id, season_id],
+        queryFn: () => SpeedWeekAPI.fetch(`/leagues/${league_id}/seasons/${season_id}/weeks` as '/leagues/{league_id}/seasons/{season_id}/weeks'),
+    })
 
     const handleClick = (e: React.MouseEvent<HTMLLIElement>) => {
         const weekId = e.currentTarget.id;
@@ -48,7 +55,8 @@ export const WeeksListing: React.FC<WeeksListingProps> = ({ data }) => {
     return (
         <div>
             <ul>
-                {data.map((week) => (
+                {data && data.success && data.data
+                .map((week) => (
                     <li key={week.id} className='rounded-lg bg-white mb-4 flex max-h-[191px] overflow-hidden transition-shadow duration-300 hover:shadow-md' onClick={handleClick}>
                         <div className='flex w-full'>
                             <div className='pl-4 pt-4 flex-1'>

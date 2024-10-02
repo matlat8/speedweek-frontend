@@ -11,6 +11,7 @@ import { WeeksListing } from "./(WeeksList)/WeeksList";
 import { Button } from "@/components/ui/button";
 import { NewWeekDialog } from "./(NewWeek)/NewWeek";
 import { useState } from "react";
+import { SpeedWeekAPI } from "@/api/SpeedWeekAPI";
 
 
 export default function seasonPage() {
@@ -21,20 +22,14 @@ export default function seasonPage() {
     const leagueId = parseInt(league_id)
 
     const { data, isLoading, error } = useQuery({
-        queryKey: ['seasons', 'season_id'],
-        queryFn: () => fetchSeasonDetails(seasonId, leagueId),
+        queryKey: ['seasons', seasonId],
+        queryFn: () => SpeedWeekAPI.fetch(`/leagues/${leagueId}/seasons/${seasonId}` as '/leagues/{league_id}/seasons/{season_id}'),
     })
 
     const { data: leagueData, isLoading: leagueIsLoading, error: leagueError } = useQuery({
         queryKey: ['leagues', leagueId],
         queryFn: () => fetchLeagueDetails(leagueId),
     })
-
-    const { data: weeksData, isLoading: weeksIsLoading, error: weeksError } = useQuery({
-        queryKey: ['weeks', leagueId, seasonId],
-        queryFn: () => fetchWeeks(leagueId, seasonId),
-    })
-
 
 
 
@@ -49,10 +44,10 @@ export default function seasonPage() {
         <div className="flex items-center">
             <div className="flex-col">
                 <h1 className="font-light text-[20px]">
-                    {leagueData ? leagueData.info.name : 'Loading...'}
+                    
                 </h1>
                 <h1 className="font-medium text-[24px]">
-                    {data ? data.info.name : 'Loading...'}
+                    {data?.success ? data.name : 'Loading...'}
                 </h1>
             </div>
             <div className="ml-auto flex items-center space-x-2">
@@ -65,14 +60,13 @@ export default function seasonPage() {
                 <pre className="p-4 flex-grow">
                     <code>{JSON.stringify(data, null, 4)}</code>
                     <code>{JSON.stringify(leagueData, null, 4)}</code>
-                    <code>{JSON.stringify(weeksData, null, 4)}</code>
                 </pre>
                 <div className="mt-auto p-4 bg-gray-100 text-gray-600 text-sm">
                     Footer content here
                 </div>
             </div>
             <div className="w-full sm:w-3/5">
-                <WeeksListing data={weeksData?.data || []} />
+                <WeeksListing />
             </div>
         </div>
     </Container>

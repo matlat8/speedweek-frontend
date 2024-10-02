@@ -48,8 +48,6 @@ export default function LeagueDetailsPage() {
     );
     if (error) return <div>Error loading league details</div>;
     console.log(data);
-    // Formatted Fields
-    data.info.created_at = format(new Date(data.info.created_at), 'MMMM dd, yyyy');
 
     // API Extracted Fields
     const info = data?.info || {};
@@ -60,6 +58,7 @@ export default function LeagueDetailsPage() {
         <ProtectedRoute>
             <div className='flex p-4 pt-8 gap-4'>
                 <div className='bg-white border border-gray-200 rounded-md min-w-96 h-auto'>
+                    { }
                     <h1 className='text-2xl font-semibold p-4'>{info.name}</h1>
                     <p className='p-4'>{info.created_at}</p>
                     <Button className='m-4' variant={'outline'}>Edit</Button>
