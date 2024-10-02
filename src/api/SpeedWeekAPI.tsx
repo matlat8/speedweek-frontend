@@ -19,4 +19,4 @@ export class SpeedWeekAPI {
             ...json
         }
     }
-}
+} 
