@@ -110,4 +110,74 @@ declare namespace SpeedWeekAPI {
         }>;
     }
 
+    interface $_RequestSchema {
+        "/leagues/{league_id}/seasons/{season_id}/weeks/{week_id}/laps": ListResponse<{
+            id: string;
+            driver: {
+                slug: string;
+                firstName: string;
+                lastName: string;
+            }
+            driverRating: number;
+            event: string;
+            session: number;
+            sessionType: string;
+            run: number;
+            season: {
+                id: number;
+                name: string;
+                shortName: string;
+                start: string;
+                end: string;
+            }
+            car: {
+                id: number;
+                name: string;
+                platform: string;
+                platform_id: number;
+            }
+            track: {
+                id: number;
+                name: string;
+                variant: string;
+                platform: string;
+                platform_id: number;
+            }
+            startTime: string;
+            lapNumber: number;
+            lapTime: number;
+            clean: boolean;
+            joker: boolean;
+            discontinuity: boolean;
+            missing: boolean;
+            incomplete: boolean;
+            offtrack: boolean;
+            pitlane: boolean;
+            pitIn: boolean;
+            pitOut: boolean;
+            trackTemp: number;
+            trackUsage: number;
+            trackWetness: number;
+            airTemp: number;
+            clouds: number;
+            airDensity: number;
+            airPressure: number;
+            windVel: number;
+            windDir: number;
+            relativeHumidity: number;
+            fogLevel: number;
+            precipitation: number;
+            sectors: {
+                sectorTime: number;
+                incomplete: boolean;
+            }[];
+            fuelLevel: number;
+            fuelUsed: number;
+            fuelAdded: number;
+            tireCompound: number;
+            canViewTelemetry: boolean;
+            canViewSetup: boolean;
+        }>;
+    }
+
 }
