@@ -147,7 +147,7 @@ function WeekModal(row: SpeedWeekAPI.$_RequestSchema["/leagues/{league_id}/seaso
                         </div>
                     )}
 
-                    {data && data.data.length === 0 && (
+                    {data && data.success && data.data.length === 0 && (
                         <div className='flex items-center justify-center h-32 w-32'>
                             <p>No data available</p>
                         </div>
